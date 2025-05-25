@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Detect emotions in text with our advanced Emotion Detector tool.">
+  <meta name="author" content="Emotion Detector Team">
+  <title>Emotion Detector</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: 'Arial', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeIn 1.5s ease-in-out;
+      overflow-x: hidden;
+    }
+    .navbar {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+      padding: 10px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+    .navbar a:hover {
+      color: #ffd700;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    .navbar a::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      transition: transform 0.3s ease;
+    }
+    .navbar a:hover::before {
+      transform: scale(1.1);
+    }
+    .navbar a.about::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+    }
+    .navbar a.contact::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>');
+    }
+    .navbar a.about:hover::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+    }
+    .navbar a.contact:hover::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>');
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      margin: 80px auto 20px;
+      animation: slideUp 1s ease-out;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      animation: slideIn 1s ease-out;
+      position: relative;
+    }
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: #ffd700;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    h1:hover::after {
+      width: 100px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    input[type="text"]:focus {
+      outline: none;
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+      transform: translateY(-2px);
+    }
+    button {
+      background: linear-gradient(45deg, #ffd700, #ffaa00);
+      border: none;
+      padding: 12px 25px;
+      font-weight: bold;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .result {
+      margin-top: 1.5rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffeb3b;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .extra-links {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .extra-links a {
+      color: #ffd700;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    .extra-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background: #ffd700;
+      transition: width 0.3s ease;
+    }
+    .extra-links a:hover::after {
+      width: 100%;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    .modal-content {
+      background: #222;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 450px;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      animation: slideDown 0.5s ease forwards;
+    }
+    .modal-content h2 {
+      margin-bottom: 1rem;
+      color: #ffd700;
+      text-align: center;
+    }
+    .modal-content textarea {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      resize: none;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .submit-btn {
+      margin-top: 1rem;
+      width: 100%;
+      background: linear-gradient(45deg, #ffd700, #ffaa00);
+      border: none;
+      padding: 12px;
+      font-weight: bold;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: #ffd700;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .close-btn:hover {
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      padding: 15px 10px;
+      color: white;
+      background: transparent;
+      width: 100%;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-top: auto;
+      user-select: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="/about" class="about" aria-label="About page">About</a>
+    <a href="/contact" class="contact" aria-label="Contact page">Contact</a>
+  </div>
+  <div class="container">
+    <h1>Emotion Detector</h1>
+    <form action="/" method="POST">
+      <input type="text" name="user_input" placeholder="Enter your text..." required autocomplete="off" aria-label="Text input for emotion detection">
+      <button type="submit">Detect Emotion</button>
+    </form>
+    {% if prediction %}
+      <div class="result">
+        Predicted Emotion: <strong>{{ prediction }}</strong>
+      </div>
+    {% endif %}
+    {% if report_submitted %}
+      <div class="result">
+        Thank you for your report! We'll look into it.
+      </div>
+    {% endif %}
+    <div class="extra-links">
+      <a href="#" id="openReport" aria-label="Report a problem">Report a Problem</a>
+    </div>
+  </div>
+  <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-content">
+      <button class="close-btn" id="closeReport" aria-label="Close report modal">×</button>
+      <h2>Report a Problem</h2>
+      <form id="reportForm" action="/report" method="POST">
+        <textarea name="problem_description" placeholder="Describe the problem here..." required aria-label="Problem description"></textarea>
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    © 2025 Emotion Detector. All rights reserved.
+  </footer>
+  <script>
+    const openReport = document.getElementById('openReport');
+    const closeReport = document.getElementById('closeReport');
+    const reportModal = document.getElementById('reportModal');
+    if (openReport) {
+      openReport.addEventListener('click', function(e) {
+        e.preventDefault();
+        reportModal.style.display = 'flex';
+        reportModal.setAttribute('aria-hidden', 'false');
+      });
+    }
+    closeReport.addEventListener('click', function() {
+      reportModal.style.display = 'none';
+      reportModal.setAttribute('aria-hidden', 'true');
+    });
+    window.addEventListener('click', function(e) {
+      if (e.target === reportModal) {
+        reportModal.style.display = 'none';
+        reportModal.setAttribute('aria-hidden', 'true');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn about the Emotion Detector tool.">
+  <meta name="author" content="Emotion Detector Team">
+  <title>About - Emotion Detector</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: 'Arial', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeIn 1.5s ease-in-out;
+      overflow-x: hidden;
+    }
+    .navbar {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      gap: 15px;
+      z-index: 1000;
+      padding: 10px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+    .navbar a:hover {
+      color: #ffd700;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    .navbar a::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      transition: transform 0.3s ease;
+    }
+    .navbar a:hover::before {
+      transform: scale(1.1);
+    }
+    .navbar a.home::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+    }
+    .navbar a.contact::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>');
+    }
+    .navbar a.home:hover::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+    }
+    .navbar a.contact:hover::before {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>');
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      margin: 80px auto 20px;
+      animation: slideUp 1s ease-out;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      animation: slideIn 1s ease-out;
+      position: relative;
+    }
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: #ffd700;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    h1:hover::after {
+      width: 100px;
+    }
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      animation: fadeIn 2s ease-in-out;
+      transition: transform 0.3s ease;
+    }
+    p:hover {
+      transform: translateY(-2px);
+    }
+    footer {
+      font-size: 0.85rem;
+      color: #ddd;
+      padding: 1rem;
+      text-align: center;
+      user-select: none;
+      animation: fadeIn 2s ease-in-out;
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @media (max-width: 768px) {
+      .navbar {
+        top: 10px;
+        right: 10px;
+        gap: 10px;
+      }
+      .navbar a {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+      }
+      .navbar a::before {
+        width: 16px;
+        height: 16px;
+      }
+      .container {
+        padding: 1.5rem;
+        margin: 70px 10px 20px;
+        max-width: 100%;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 0.9rem;
+      }
+      footer {
+        font-size: 0.75rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .container {
+        padding: 1rem;
+        margin: 100px 10px 15px;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+      p {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="/" class="home" aria-label="Home page">Home</a>
+    <a href="/contact" class="contact" aria-label="Contact page">Contact</a>
+  </div>
+  <div class="container">
+    <h1>About Emotion Detector</h1>
+    <p>
+      The Emotion Detector is a web application designed to analyze text input and predict the underlying emotions.
+      It leverages advanced natural language processing (NLP) techniques to identify sentiments such as happiness, sadness, anger, and more.
+      This tool is built with a focus on user-friendliness and accuracy, making it a valuable resource for understanding emotional tones in communication.
+    </p>
+    <p>
+      The application uses machine learning models trained on diverse datasets to ensure reliable predictions.
+      It is developed with modern web technologies, ensuring a seamless experience across devices.
+      Whether you're analyzing personal messages or professional correspondence, the Emotion Detector provides insights to enhance emotional understanding.
+    </p>
+  </div>
+  <footer>
+    © 2025 Emotion Detector. All rights reserved.
+  </footer>
+</body>
+</html>
