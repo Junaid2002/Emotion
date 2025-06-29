@@ -1,11 +1,10 @@
 import os
 import sys
 from flask import Flask, render_template, request
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from scripts.predict import preprocess_and_predict
 
-from predict import preprocess_and_predict
-
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = 'a_random_secure_key_1234567890'
 
 @app.route('/')
